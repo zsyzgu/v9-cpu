@@ -90,7 +90,7 @@ int vsprintf(char *s, char *f, va_list v)
 
 int printf(char *f) { static char buf[4096]; return write(1, buf, vsprintf(buf, f, &f)); } // XXX remove static from buf
 
-bool isException = false;
+int isException = 0;
 int cnt = 0;
 
 alltraps()
@@ -98,7 +98,7 @@ alltraps()
   asm(PSHA);
   asm(PSHB);
   asm(PSHC);
-  isException = true;
+  isException = 1;
   asm(POPC);
   asm(POPB);
   asm(POPA);
@@ -110,10 +110,10 @@ main()
   ivec(alltraps);
   asm(STI);
 
-  while (isException) {
+  while (isException == 0) {
     cnt++;
     int tmp = *(int*)(ramcount);
   }
-  printf("%dM\n", cnt/1024/1024);
+  printf("%d\n", cnt/1024/1024);
   halt(0);
 }
