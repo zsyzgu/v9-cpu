@@ -92,6 +92,7 @@ int printf(char *f) { static char buf[4096]; return write(1, buf, vsprintf(buf, 
 
 int isException = 0;
 int cnt = 0;
+int tmp = 0;
 
 alltraps()
 {
@@ -112,7 +113,7 @@ main()
 
   while (isException == 0) {
     cnt++;
-    int tmp = *(int*)(ramcount);
+    tmp = *(int*)(cnt);
   }
   printf("%d\n", cnt/1024/1024);
   halt(0);
